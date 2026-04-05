@@ -1,34 +1,28 @@
 import express from 'express';
-import session from 'express-session';
-import dotenv from 'dotenv';
-import authRoutes from './routes/auth';
-import { authMiddleware } from './middleware/auth';
-
-dotenv.config();
+import methodOverride from 'method-override';
+import path from 'path';
+import itemsRouter from './routes/items';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-app.use(express.json());
+// view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '..', 'views'));
+
+// middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method')); // enables _method query parameter for PUT/DELETE from forms
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'secret-key',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false }, // set to true in production with HTTPS
-}));
+// routes
+app.use('/items', itemsRouter);
 
-// Auth routes
-app.use('/api/auth', authRoutes);
-
-// Example protected route
-app.get('/api/protected', authMiddleware, (req, res) => {
-  res.json({ message: 'You are authenticated', user: req.session.userId });
+// redirect root to /items
+app.get('/', (_req, res) => {
+  res.redirect('/items');
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-
-export default app;

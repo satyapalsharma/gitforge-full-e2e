@@ -1,0 +1,32 @@
+<% layout('layout') %>
+<h1>Items</h1>
+<a href="/items/new"><button class="btn-success">Create New Item</button></a>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (items.length === 0) { %>
+      <tr><td colspan="4">No items yet.</td></tr>
+    <% } else { %>
+      <% items.forEach(item => { %>
+        <tr>
+          <td><%= item.id %></td>
+          <td><%= item.name %></td>
+          <td><%= item.description %></td>
+          <td class="actions">
+            <a href="/items/<%= item.id %>/edit"><button class="btn-primary">Edit</button></a>
+            <form action="/items/<%= item.id %>?_method=DELETE" method="POST" style="display:inline">
+              <button type="submit" class="btn-danger" onclick="return confirm('Delete this item?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
