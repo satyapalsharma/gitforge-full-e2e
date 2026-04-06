@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications Demo</title>
+  <style>
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 9999;
+    }
+    .toast {
+      min-width: 200px;
+      margin-bottom: 0.5rem;
+      padding: 1rem;
+      border-radius: 4px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      animation: slidein 0.3s ease;
+    }
+    .toast.info { background: #17a2b8; }
+    .toast.success { background: #28a745; }
+    .toast.warning { background: #ffc107; }
+    .toast.error { background: #dc3545; }
+    @keyframes slidein {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toast-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="toast-container" id="toast-container"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
