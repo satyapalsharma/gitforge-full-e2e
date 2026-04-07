@@ -1,28 +1,15 @@
 import express from 'express';
-import methodOverride from 'method-override';
-import path from 'path';
-import itemsRouter from './routes/items';
+import settingsRouter from './routes/settings';
 
 const app = express();
-const PORT = 3000;
+app.use(express.json());
 
-// view engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '..', 'views'));
+// Mount the settings routes under /api/settings
+app.use('/api/settings', settingsRouter);
 
-// middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method')); // enables _method query parameter for PUT/DELETE from forms
-app.use(express.static(path.join(__dirname, '..', 'public')));
-
-// routes
-app.use('/items', itemsRouter);
-
-// redirect root to /items
-app.get('/', (_req, res) => {
-  res.redirect('/items');
-});
-
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
+
+export default app;
